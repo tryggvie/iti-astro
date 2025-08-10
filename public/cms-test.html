@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Decap CMS Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #cms { min-height: 500px; border: 1px solid #ccc; padding: 20px; }
+    .error { color: red; }
+    .success { color: green; }
+  </style>
+</head>
+<body>
+  <h1>Decap CMS Test Page</h1>
+  <div id="status"></div>
+  <div id="cms"></div>
+  
+  <script>
+    // Load Decap CMS
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+    script.onload = function() {
+      console.log('Decap CMS loaded successfully');
+      document.getElementById('status').innerHTML = '<div class="success">Decap CMS loaded successfully</div>';
+      initCMS();
+    };
+    script.onerror = function() {
+      console.error('Failed to load Decap CMS');
+      document.getElementById('status').innerHTML = '<div class="error">Failed to load Decap CMS</div>';
+    };
+    document.head.appendChild(script);
+
+    function initCMS() {
+      try {
+        // Configuration for testing
+        const config = {
+          backend: {
+            name: 'test-repo',
+            branch: 'main'
+          },
+          local_backend: true,
+          auth: false,
+          media_folder: 'public/images/uploads',
+          public_folder: '/images/uploads',
+          collections: [
+            {
+              name: 'test',
+              label: 'Test Collection',
+              files: [
+                {
+                  name: 'test-file',
+                  label: 'Test File',
+                  file: 'src/content/test.md',
+                  fields: [
+                    { label: 'Title', name: 'title', widget: 'string' },
+                    { label: 'Content', name: 'body', widget: 'markdown' }
+                  ]
+                }
+              ]
+            }
+          ]
+        };
+
+        // Initialize CMS
+        if (window.CMS) {
+          window.CMS.init({ config });
+          document.getElementById('status').innerHTML += '<div class="success">CMS initialized successfully</div>';
+        } else {
+          throw new Error('CMS object not found');
+        }
+      } catch (error) {
+        console.error('Error initializing CMS:', error);
+        document.getElementById('status').innerHTML += '<div class="error">Error initializing CMS: ' + error.message + '</div>';
+      }
+    }
+  </script>
+</body>
+</html>

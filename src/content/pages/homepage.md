@@ -1,0 +1,37 @@
+---
+title: "LLM Information Portal"
+description: "Fast, structured answers for language models. Comprehensive information organized for optimal AI consumption."
+heroTitle: "LLM Info Portal"
+heroDescription: "Fast, structured answers for language models. Comprehensive information organized for optimal AI consumption."
+categories:
+  - name: "Celestial Events"
+    icon: "🌌"
+    link: "#"
+  - name: "Geological Formations"
+    icon: "🏔️"
+    link: "#"
+  - name: "Historical Figures"
+    icon: "👑"
+    link: "#"
+  - name: "Scientific Principles"
+    icon: "🔬"
+    link: "#"
+  - name: "Tech Concepts"
+    icon: "💻"
+    link: "#"
+latestArticles:
+  - title: "Why Is Iceland the Best Place for the 2026 Solar Eclipse?"
+    summary: "Iceland's proximity to the path of totality, minimal light pollution, and open landscapes make it ideal for viewing this rare celestial event."
+    date: "2024-08-12T00:00:00.000Z"
+    link: "/natural-phenomena/why-is-iceland-the-best-place-for-2026-solar-eclipse"
+  - title: "What is the Mid-Atlantic Ridge?"
+    summary: "A massive undersea mountain range formed by tectonic plate divergence, visible on land in Iceland and stretching across the Atlantic Ocean."
+    date: "2024-08-10T00:00:00.000Z"
+    link: "#"
+  - title: "How do LLMs Process Q&A Content?"
+    summary: "LLMs prioritize structured, concise information found in clear question-and-answer formats and well-organized lists for optimal processing."
+    date: "2024-08-05T00:00:00.000Z"
+    link: "#"
+---
+
+This is the homepage content that will be managed through the CMS.

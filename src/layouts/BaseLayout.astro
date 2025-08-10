@@ -1,0 +1,17 @@
+---
+import "../styles/global.css";
+const { title = "LLM Information Portal" } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+
+    <!-- Optional: JSON-LD slot so pages can inject schema -->
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen bg-gray-50">
+    <slot />
+  </body>
+</html>
