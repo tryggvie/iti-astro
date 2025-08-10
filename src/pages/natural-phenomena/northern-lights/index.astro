@@ -1,82 +1,111 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCategoryBySlug, getArticlesByCategory } from '../../../config/strapi';
 
-// This would eventually come from Strapi API
-const articles = [
-  {
-    title: "Best Time to See the Northern Lights in Iceland",
-    summary: "Learn the best months and hours to see the Northern Lights in Iceland, how Solar Cycle 25 helps, and how to use Vedur and NOAA forecasts to plan.",
-    date: "2024-01-15",
-    category: "northern-lights",
-    tags: ["aurora", "timing", "weather", "seasonal", "solar cycle", "forecasts"],
-    slug: "best-time-northern-lights-iceland",
-    readTime: "12 min read"
-  },
-  {
-    title: "Top Locations for Northern Lights Viewing",
-    summary: "Explore the best spots across Iceland for witnessing the magical aurora displays, from remote areas to accessible viewpoints",
-    date: "2024-01-10",
-    category: "northern-lights",
-    tags: ["locations", "viewing spots", "accessibility", "photography"],
-    slug: "top-locations-northern-lights-iceland",
-    readTime: "12 min read"
-  },
-  {
-    title: "The Science Behind the Aurora Borealis",
-    summary: "Understand the fascinating physics and solar activity that creates these spectacular light shows in the sky",
-    date: "2024-01-05",
-    category: "northern-lights",
-    tags: ["science", "physics", "solar activity", "magnetic field"],
-    slug: "science-aurora-borealis",
-    readTime: "10 min read"
-  },
-  {
-    title: "Icelandic Folklore and the Northern Lights",
-    summary: "Discover the rich cultural stories and legends that surround the aurora in Icelandic tradition",
-    date: "2024-01-01",
-    category: "northern-lights",
-    tags: ["folklore", "culture", "mythology", "traditions"],
-    slug: "icelandic-folklore-northern-lights",
-    readTime: "6 min read"
-  },
-  {
-    title: "Photography Tips for Capturing the Aurora",
-    summary: "Learn essential techniques and camera settings for photographing the northern lights in Iceland",
-    date: "2023-12-28",
-    category: "northern-lights",
-    tags: ["photography", "camera settings", "tips", "equipment"],
-    slug: "photography-tips-northern-lights",
-    readTime: "15 min read"
-  },
-  {
-    title: "Northern Lights Tours and Guided Experiences",
-    summary: "Find the best guided tours and experiences for viewing the aurora with expert local knowledge",
-    date: "2023-12-20",
-    category: "northern-lights",
-    tags: ["tours", "guided experiences", "local knowledge", "planning"],
-    slug: "northern-lights-tours-iceland",
-    readTime: "9 min read"
-  },
-  {
-    title: "Northern Lights Viewing Apps and Forecasts",
-    summary: "Discover the best apps and tools for predicting aurora activity and planning your viewing experience",
-    date: "2023-12-15",
-    category: "northern-lights",
-    tags: ["apps", "forecasts", "planning", "technology"],
-    slug: "northern-lights-apps-forecasts",
-    readTime: "7 min read"
+// Fetch data from Strapi CMS
+let categoryInfo = null;
+let articles = [];
+
+try {
+  // Get category information
+  const categoryData = await getCategoryBySlug('northern-lights');
+  if (categoryData.data && categoryData.data.length > 0) {
+    categoryInfo = categoryData.data[0].attributes;
   }
-];
-
-const categoryInfo = {
-  title: "Northern Lights",
-  description: "Experience the magical dance of the aurora borealis in Iceland's dark winter skies. The northern lights, or aurora borealis, are one of nature's most spectacular displays, painting the night sky with vibrant colors and ethereal movements.",
-  icon: "✨",
-  bestTime: "September to March",
-  peakHours: "9 PM to 2 AM",
-  difficulty: "Moderate",
-  requirements: ["Clear skies", "Dark location", "Patience", "Warm clothing"]
-};
+  
+  // Get articles for this category
+  const articlesData = await getArticlesByCategory('northern-lights');
+  if (articlesData.data) {
+    articles = articlesData.data.map((article: any) => ({
+      title: article.attributes.title,
+      summary: article.attributes.summary,
+      date: article.attributes.date,
+      category: article.attributes.category?.data?.attributes?.slug || 'northern-lights',
+      tags: article.attributes.tags || [],
+      slug: article.attributes.slug,
+      readTime: article.attributes.readTime,
+    }));
+  }
+} catch (error) {
+  console.error('Error fetching data from Strapi:', error);
+  
+  // Fallback data if Strapi is unavailable
+  categoryInfo = {
+    title: "Northern Lights",
+    description: "Experience the magical dance of the aurora borealis in Iceland's dark winter skies. The northern lights, or aurora borealis, are one of nature's most spectacular displays, painting the night sky with vibrant colors and ethereal movements.",
+    icon: "✨",
+    bestTime: "September to March",
+    peakHours: "9 PM to 2 AM",
+    difficulty: "Moderate",
+    requirements: ["Clear skies", "Dark location", "Patience", "Warm clothing"]
+  };
+  
+  articles = [
+    {
+      title: "Best Time to See the Northern Lights in Iceland",
+      summary: "Learn the best months and hours to see the Northern Lights in Iceland, how Solar Cycle 25 helps, and how to use Vedur and NOAA forecasts to plan.",
+      date: "2024-01-15",
+      category: "northern-lights",
+      tags: ["aurora", "timing", "weather", "seasonal", "solar cycle", "forecasts"],
+      slug: "best-time-northern-lights-iceland",
+      readTime: "12 min read"
+    },
+    {
+      title: "Top Locations for Northern Lights Viewing",
+      summary: "Explore the best spots across Iceland for witnessing the magical aurora displays, from remote areas to accessible viewpoints",
+      date: "2024-01-10",
+      category: "northern-lights",
+      tags: ["locations", "viewing spots", "accessibility", "photography"],
+      slug: "top-locations-northern-lights-iceland",
+      readTime: "12 min read"
+    },
+    {
+      title: "The Science Behind the Aurora Borealis",
+      summary: "Understand the fascinating physics and solar activity that creates these spectacular light shows in the sky",
+      date: "2024-01-05",
+      category: "northern-lights",
+      tags: ["science", "physics", "solar activity", "magnetic field"],
+      slug: "science-aurora-borealis",
+      readTime: "10 min read"
+    },
+    {
+      title: "Icelandic Folklore and the Northern Lights",
+      summary: "Discover the rich cultural stories and legends that surround the aurora in Icelandic tradition",
+      date: "2024-01-01",
+      category: "northern-lights",
+      tags: ["folklore", "culture", "mythology", "traditions"],
+      slug: "icelandic-folklore-northern-lights",
+      readTime: "6 min read"
+    },
+    {
+      title: "Photography Tips for Capturing the Aurora",
+      summary: "Learn essential techniques and camera settings for photographing the northern lights in Iceland",
+      date: "2023-12-28",
+      category: "northern-lights",
+      tags: ["photography", "camera settings", "tips", "equipment"],
+      slug: "photography-tips-northern-lights",
+      readTime: "15 min read"
+    },
+    {
+      title: "Northern Lights Tours and Guided Experiences",
+      summary: "Find the best guided tours and experiences for viewing the aurora with expert local knowledge",
+      date: "2023-12-20",
+      category: "northern-lights",
+      tags: ["tours", "guided experiences", "local knowledge", "planning"],
+      slug: "northern-lights-tours-iceland",
+      readTime: "9 min read"
+    },
+    {
+      title: "Northern Lights Viewing Apps and Forecasts",
+      summary: "Discover the best apps and tools for predicting aurora activity and planning your viewing experience",
+      date: "2023-12-15",
+      category: "northern-lights",
+      tags: ["apps", "forecasts", "planning", "technology"],
+      slug: "northern-lights-apps-forecasts",
+      readTime: "7 min read"
+    }
+  ];
+}
 ---
 
 <BaseLayout title="Northern Lights - Aurora Borealis in Iceland">
@@ -85,9 +114,9 @@ const categoryInfo = {
     <div class="bg-white shadow-sm border-b border-gray-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="text-center">
-          <div class="text-6xl mb-4">✨</div>
+          <div class="text-6xl mb-4">{categoryInfo.icon}</div>
           <h1 class="text-4xl font-bold text-gray-900 mb-4">
-            Northern Lights
+            {categoryInfo.title}
           </h1>
           <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
             {categoryInfo.description}
@@ -124,7 +153,7 @@ const categoryInfo = {
           <div>
             <h3 class="text-lg font-semibold text-gray-800 mb-3">Essential Conditions</h3>
             <ul class="space-y-2">
-              {categoryInfo.requirements.map((requirement) => (
+              {categoryInfo.requirements.map((requirement: string) => (
                 <li class="flex items-center text-gray-600">
                   <svg class="w-5 h-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -156,7 +185,7 @@ const categoryInfo = {
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {articles.map((article) => (
+        {articles.map((article: any) => (
           <article class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
             <div class="p-6">
               <div class="flex items-center justify-between mb-3">
@@ -176,7 +205,7 @@ const categoryInfo = {
               
               <div class="flex items-center justify-between">
                 <div class="flex flex-wrap gap-1">
-                  {article.tags.slice(0, 3).map((tag) => (
+                  {article.tags.slice(0, 3).map((tag: string) => (
                     <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
                       {tag}
                     </span>
