@@ -13,6 +13,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
       
       <div class="p-4">
+        <div id="status" class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <p class="text-blue-800">Loading CMS...</p>
+        </div>
         <div id="cms" class="bg-white rounded-lg shadow-sm border border-gray-200 min-h-screen"></div>
       </div>
     </div>
@@ -22,11 +25,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
-    // Initialize CMS - it will automatically load config.yml from the public folder
-    if (window.CMS) {
-      window.CMS.init();
+    // Initialize CMS with better error handling
+    function initCMS() {
+      const statusEl = document.getElementById('status');
+      
+      try {
+        if (statusEl && (window as any).CMS) {
+          console.log('Decap CMS loaded successfully');
+          statusEl.innerHTML = '<p class="text-green-800">✓ Decap CMS loaded successfully</p>';
+          
+          // Initialize the CMS
+          (window as any).CMS.init();
+          statusEl.innerHTML = '<p class="text-green-800">✓ CMS initialized successfully</p>';
+        } else {
+          throw new Error('CMS object not found');
+        }
+      } catch (error) {
+        console.error('Error initializing CMS:', error);
+        if (statusEl) {
+          statusEl.innerHTML = `<p class="text-red-800">✗ Error: ${(error as Error).message}</p>`;
+        }
+      }
+    }
+
+    // Wait for CMS to load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCMS);
     } else {
-      console.error('Decap CMS failed to load');
+      initCMS();
     }
   </script>
 </BaseLayout>

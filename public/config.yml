@@ -2,12 +2,6 @@ backend:
   name: git-gateway
   branch: main
 
-# Local backend configuration
-local_backend: true
-
-# Disable authentication for local testing
-auth: false
-
 # Media settings
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
