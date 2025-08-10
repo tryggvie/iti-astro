@@ -2,57 +2,55 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="CMS Admin">
+<BaseLayout title="Strapi CMS Admin">
   <div class="min-h-screen bg-gray-50">
     <div class="max-w-7xl mx-auto">
       <div class="bg-white shadow-sm border-b border-gray-200">
         <div class="px-4 py-6">
           <h1 class="text-2xl font-bold text-gray-900">Content Management System</h1>
-          <p class="text-gray-600 mt-1">Manage your website content and schema markup</p>
+          <p class="text-gray-600 mt-1">Manage your website content using Strapi CMS</p>
         </div>
       </div>
       
-      <div class="p-4">
-        <div id="status" class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p class="text-blue-800">Loading CMS...</p>
+      <div class="p-8">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+          <div class="mb-6">
+            <svg class="mx-auto h-16 w-16 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+          </div>
+          
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Strapi CMS</h2>
+          <p class="text-gray-600 mb-6">
+            Your content is managed through Strapi CMS. Click the button below to access the Strapi admin panel.
+          </p>
+          
+          <div class="space-y-4">
+            <a 
+              href="https://iti-strapi-production.up.railway.app/admin" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            >
+              <svg class="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              Open Strapi Admin
+            </a>
+            
+            <div class="text-sm text-gray-500">
+              <p>Make sure to replace "your-strapi-railway-url.com" with your actual Strapi Railway URL</p>
+            </div>
+          </div>
         </div>
-        <div id="cms" class="bg-white rounded-lg shadow-sm border border-gray-200 min-h-screen"></div>
+        
+        <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 class="text-sm font-medium text-blue-800 mb-2">Configuration Required</h3>
+          <p class="text-sm text-blue-700">
+            Your Strapi instance is configured and running at: <code class="bg-blue-100 px-1 rounded">https://iti-strapi-production.up.railway.app/admin</code>
+          </p>
+        </div>
       </div>
     </div>
   </div>
-
-  <!-- Load Decap CMS from CDN -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  
-  <script>
-    // Initialize CMS with better error handling
-    function initCMS() {
-      const statusEl = document.getElementById('status');
-      
-      try {
-        if (statusEl && (window as any).CMS) {
-          console.log('Decap CMS loaded successfully');
-          statusEl.innerHTML = '<p class="text-green-800">✓ Decap CMS loaded successfully</p>';
-          
-          // Initialize the CMS
-          (window as any).CMS.init();
-          statusEl.innerHTML = '<p class="text-green-800">✓ CMS initialized successfully</p>';
-        } else {
-          throw new Error('CMS object not found');
-        }
-      } catch (error) {
-        console.error('Error initializing CMS:', error);
-        if (statusEl) {
-          statusEl.innerHTML = `<p class="text-red-800">✗ Error: ${(error as Error).message}</p>`;
-        }
-      }
-    }
-
-    // Wait for CMS to load
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initCMS);
-    } else {
-      initCMS();
-    }
-  </script>
 </BaseLayout>
